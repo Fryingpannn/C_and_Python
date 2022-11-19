@@ -1,2 +1,2 @@
-# C_and_Python
+# Python Client Server
 COMP348
