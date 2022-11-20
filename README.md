@@ -1,5 +1,6 @@
 # Customer database application
 Comp 348
+https://github.com/Fryingpannn/ClientServer_PythonSocket
 
 # How to run
  - `cd server`
