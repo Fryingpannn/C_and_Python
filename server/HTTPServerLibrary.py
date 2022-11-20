@@ -2,12 +2,11 @@ import socket
 from http.client import responses
 from FileHandler import FileHandler
 from threading import Thread
-import time
 import json
 
 '''
     PORT:       Integer     > Port to connect to
-    DIRECTORY:  String      > Directory to use
+    DIRECTORY:  String      > File to use
     VERBOSE:    Boolean     > Print debugging information 
 '''
 
@@ -15,9 +14,9 @@ class HTTPServerLibrary:
 
     def __init__(self): 
         # TODO: change verbose to false
-        self.fileHandler = FileHandler(verbose=True)
+        self.fileHandler = FileHandler(verbose=False)
 
-    def startServer(self, PORT=9999, DIRECTORY = "database.txt", VERBOSE = False):
+    def startServer(self, PORT=9999, DIRECTORY = "data.txt", VERBOSE = False):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
 
             server_socket.bind(('localhost', PORT))
@@ -38,10 +37,6 @@ class HTTPServerLibrary:
             print('Request from: ', client_connection, client_address)
             print('Request Data: ', requestHeader.strip(), requestBody.strip())
             print('\n')
-
-
-        # Mimicking slow response
-        #time.sleep(10)
 
         if requestBody: requestBody = json.loads(requestBody)
         filehandlerResponse = self.__processRequest(requestHeader, requestBody)
@@ -86,10 +81,10 @@ class HTTPServerLibrary:
 
         METHOD = HTTP_META_INFORMATION[0].strip()
         PATH = HTTP_META_INFORMATION[1].strip()
-        name = PATH[1:].replace('%20', ' ')
-        print(PATH)
+        name = PATH.replace('%20', ' ')
+        name = name.replace('/', '')
 
-        if METHOD not in ['GET', 'POST', 'UPDATE', 'DELETE']:
+        if METHOD not in ['GET', 'POST', 'PATCH', 'DELETE']:
             return {
                 'statusCode': 405,
                 'data': 'HTTP Method not supported: ' + METHOD

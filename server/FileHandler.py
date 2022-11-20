@@ -7,7 +7,8 @@ from Modules.FileLock import FileLock
 class FileHandler:
 
     def __init__(self, verbose=False):
-        self.defaultDirectory = 'database.txt'
+        # when in debug mode, use 'server/data.txt' instead
+        self.defaultDirectory = 'data.txt'
         '''
         {Name : [Age, Address, Number]}
         '''
@@ -19,7 +20,7 @@ class FileHandler:
     def read_database(self):
         file_path = self.defaultDirectory
         if not Path(file_path).exists() or not Path(file_path).is_file():
-            raise Exception('Cannot read from database.')
+            raise Exception('Cannot read from database. Incorrect path or "data.txt" does not exist.')
         
         self.count = 0
         with open(file_path) as f:
@@ -31,7 +32,7 @@ class FileHandler:
                 self.count += 1
                 customer = line.split('|')
                 name, age, address, number = customer
-                if name == '': continue
+                if all(i == '' or i.isspace() for i in name): continue
                 if number == '\n': number = ''
                 self.database[name.strip()] = [age.strip(), address.strip(), number.strip()]
         
@@ -40,6 +41,7 @@ class FileHandler:
     def print_database(self):
         file_path = self.defaultDirectory
         try:
+            self.save_database()
             if not Path(file_path).exists() or not Path(file_path).is_file():
                 return {
                     'statusCode': 404,
@@ -136,11 +138,11 @@ class FileHandler:
             }
 
     def save_database(self):
-        filename = 'testfile.txt' #self.defaultDirectory
+        filename = self.defaultDirectory
 
         filecontent = []
         for name,value in self.database.items():
-            filecontent.append([name] + value)
+            if name: filecontent.append([name] + value)
         filecontent.sort()
         filecontent = '\n'.join('|'.join(customer) for customer in filecontent)
         if self.verbose: print('[Printing save database]:\n', filecontent)

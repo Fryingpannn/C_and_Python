@@ -1,5 +1,6 @@
 import socket
 from urllib.parse import urlparse
+import json
 
 class HTTPLibrary:
         
@@ -35,7 +36,7 @@ class HTTPLibrary:
                 responseHeader, responseBody = self.__receiveResponse(TCPSocket)
 
                 # Print server response
-                print("[Server response below]:")
+                print("=====[Server response below]=====")
                 print(responseBody)
 
     '''
@@ -59,6 +60,7 @@ class HTTPLibrary:
             request += HEADER + "\r\n"
 
         if BODY_DATA is not None:
+            BODY_DATA = json.dumps(BODY_DATA)
             request += "Content-Length: " + str(len(BODY_DATA)) + "\r\n"
             request += "\r\n"
             request += BODY_DATA + "\r\n"
@@ -93,20 +95,3 @@ class HTTPLibrary:
         else:
             responseHeader, responseBody = response.split('\r\n\r\n', 1)
             return responseHeader, responseBody
-
-
-    def __responseHeaderContainsRedirection(self, responseHeaderString):
-        HEADERS = responseHeaderString.split('\r\n')
-        return '302' in HEADERS[0]
-
-
-    def __findRedirectURL(self, responseHeaderString):
-        HEADERS = responseHeaderString.split('\r\n')
-
-        '''Find the Location header and get the redirect URL'''
-        for HEADER in HEADERS:
-            if 'location' in HEADER.lower():
-                key, value = HEADER.split(':', 1)                
-                return value.strip()
-                
-        return ""

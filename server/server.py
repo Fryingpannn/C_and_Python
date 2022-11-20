@@ -1,12 +1,14 @@
 '''
-Server file.
+Matthew Pan 40135588
 
-usage: httpfs [-v] [-p PORT] [-d PATH-TO-DIR]
+Server file for customer interaction app.
+
+usage: server.py [-v] [-p PORT] [-d PATH-TO-DIR]
 -v Prints debugging messages.
 -p Specifies the port number that the server will listen and serve at.
 Default is 8080.
 -d Specifies the directory that the server will use to read/write requested
-files. Default is the current directory when launching the application.
+data. Default is data.txt.
 '''
 import argparse
 from HTTPServerLibrary import HTTPServerLibrary
@@ -38,12 +40,13 @@ def main():
 
     http = HTTPServerLibrary()
     port = 9999
-    directory = 'database.txt'
+    directory = 'data.txt'
     verbose = False
     if parsed_args.port: port = parsed_args.port
     if parsed_args.directory: directory = parsed_args.directory
     if parsed_args.verbose: verbose = parsed_args.verbose
 
+    print("Starting server on port: ", port)
     http.startServer(port, directory, verbose)
 
     print('\n===========[END]==========\n')

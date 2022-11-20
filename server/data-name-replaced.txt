@@ -1,0 +1,17 @@
+Ahmad|43|67 Drury Lane|897-3456
+Billy|199|123 Apple Street|435-456-5768
+Bob|26|123 Doop Road|345-5678
+Donna|35|Here Road|564-6879
+John|34|ABC Street|768-3245
+Nancy|21|Stuffy Street|345-7896
+angelina|20||
+elon musk|70||2343
+helloworld|||
+john|60||123
+kek|1||2342345
+matthew pan|50|123 hello world st. 5H3K5X, Quebec Canada.|485-309-0943
+michael jo|234|hello world street|
+patrick|99|d|
+philip t|||234-234-34
+sue|45|Happy|
+yoyo|34||123
